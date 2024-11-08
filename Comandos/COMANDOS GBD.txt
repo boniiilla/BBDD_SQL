@@ -1,9 +1,0 @@
-COMANDOS GBD
-
-sudo mount -t vboxsf CarpetaCompartida /home/usuari/compartida -O uid=1000,rw
-
-mysql -u root -p
-
-create databese "nombre"
-
-source /home/usuario/"ruta tabla"
