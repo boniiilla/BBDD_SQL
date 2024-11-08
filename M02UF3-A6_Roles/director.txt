@@ -1,0 +1,12 @@
+num_ven	nom	any_naix	oficina_ven	titol	contracte	director	quota	vendes
+102	Sue Smith	1948	21	Venedor	1986-12-10	108	350000	581968
+103	Paul Cruz	1968	12	Venedor	1987-03-01	104	275000	289594
+104	Bob Smith	1960	12	Director	1987-05-19	106	200000	142594
+105	Bill Adams	1965	13	Venedor	1995-02-12	104	350000	396919
+106	Sam Clark	1952	11	Gerent	1988-06-14	NULL	275000	311697
+num_comanda	descripcio	data_comanda	clie	ven	iva	dte
+112885	Autoservei	1989-06-15	2102	NULL	21	0
+112950	Autoservei	1995-11-21	2107	110	21	0
+112963	Comanda client VIP	1995-12-17	2103	105	21	0
+112968	Comanda client VIP	1989-12-10	2102	NULL	21	0
+112975	Comanda client VIP	1989-10-12	2111	103	21	0

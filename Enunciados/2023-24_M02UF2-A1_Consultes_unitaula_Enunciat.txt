@@ -1,0 +1,203 @@
+En aquesta activitat guiada trobaràs exemples del que pots fer servir en cada consulta unitaula
+Les 10 preguntes son les que van numerades de forma 1), 2),.. acompanyada del seu enunciat.
+La teva resposta serà la consulta o query enviada al servidor i la resposta obtinguda.
+
+Exemple
+
+
+Select 'M02UF2-A1 Vendes' AS 'Consultes unitaula';
++-----------------------+
+| Consultes unitaula    |
++-----------------------+
+| M02UF2-A1 Vendes      |
++-----------------------+
+1 row in set (0.00 sec)
+
+La teva resposta serà un arxiu amb extensió .txt de nom: CognomNom-M02UF2-A1.txt
+On CognomNom, per exemple GarciaXavier correspon al teu primer cognom i el teu nom.
+
+*** L'arxiu només ha de contenir el número de pregunta amb l'enunciat, la consulta al servidor i la resposta obtinguda.
+
+
+
+1) Llisteu totes les oficines amb els seus objectius i vendes reals.
+
+
+
+# ********************************
+# PROJECCIÓ i ORDENACIÓ
+# ********************************
+
+Per a projectar una columna o atribut determinat, només cal indicar el seu nom i en cas de repetició en altres taules de la consulta: nomTaula.nomAtribut.
+
+Exemple
+Projecta o llista el nom de les ciutats on està situada cada oficina, juntament amb les seves vendes.
+
+SELECT oficines.ciutat, oficines.vendes FROM oficines;
++-------------+--------+
+| ciutat      | vendes |
++-------------+--------+
+| New York    | 692637 |
+| Chicago     | 735042 |
+| Atlanta     | 367911 |
+| Los Angeles | 835915 |
+| Denver      | 186042 |
++-------------+--------+
+5 rows in set (0,00 sec)
+
+Si volem ordenar les dades per alguna de les columnes anteriors (per defecte l'haurà ordenat per la seva clau primària o PK), farem servir la clàusula ORDER BY.
+
+Exemple
+Fes la consulta anterior, però ordenant el resultat de la sortida per la columna ciutat.
+
+SELECT oficines.ciutat, oficines.vendes FROM oficines ORDER BY ciutat;
++-------------+--------+
+| ciutat      | vendes |
++-------------+--------+
+| Atlanta     | 367911 |
+| Chicago     | 735042 |
+| Denver      | 186042 |
+| Los Angeles | 835915 |
+| New York    | 692637 |
++-------------+--------+
+5 rows in set (0,00 sec)
+
+També podem indicar la posició de la columna segons la nostra consulta, enlloc del seu nom.
+
+SELECT oficines.ciutat, oficines.vendes FROM oficines ORDER BY 1;
++-------------+--------+
+| ciutat      | vendes |
++-------------+--------+
+| Atlanta     | 367911 |
+| Chicago     | 735042 |
+| Denver      | 186042 |
+| Los Angeles | 835915 |
+| New York    | 692637 |
++-------------+--------+
+5 rows in set (0,00 sec)
+
+
+Si no indiquem res en la clàusula ORDER BY, l'ordenació farà servir ASC (ordre ascendent), però també podem indicar l'ordre descendent, amb l'opció DESC (descending).
+
+SELECT oficines.ciutat, oficines.vendes FROM oficines ORDER BY ciutat DESC;
++-------------+--------+
+| ciutat      | vendes |
++-------------+--------+
+| New York    | 692637 |
+| Los Angeles | 835915 |
+| Denver      | 186042 |
+| Chicago     | 735042 |
+| Atlanta     | 367911 |
++-------------+--------+
+5 rows in set (0,00 sec)
+
+# *******************************************************************************
+
+
+2) Projecta el nom de les societats del clients amb l'idioma assignat, ordenant el resultat per idioma i de forma descendent.
+
+
+
+# ********************************
+# LA CONDICIÓ DE CONSULTA: WHERE
+# ********************************
+
+
+Quan fem una consulta podem incloure restriccions, la majoria d'aquestes estaran incloses en la condició WHERE.
+
+
+WHERE per si sól no fa res, ja que ha d'anar acompanyat d'elements de condició o predicats, aquests poden ser:
+
+# Igualtat ( = ): Compara si el resultat és exactament igual a un valor donat.
+
+Seleccionar els clients amb un id_client menor que 3.
+
+SELECT * FROM clients WHERE id_client < 3;
+
+Seleccionar els clients amb un id_client diferent de 3.
+
+SELECT * FROM clients WHERE id_client != 3;
+
+# operadors: ( > ) Més gran què.. ( < ) Mes petit què.. ( <> ) Diferent de.. ( != ) Diferent de..
+
+Seleccionar els clients amb un id_client igual a 3.
+
+SELECT * FROM clients WHERE id_client = 3;
+
+
+# AND ( i ): Utilitzat per combinar dues o més condicions. Totes les condicions han de ser certes.Seleccionar els clients amb id_client igual a 2 i amb correu electrònic no nul.
+
+SELECT * FROM clients WHERE id_client = 2 AND correu_electrònic IS NOT NULL;
+
+# OR ( o ): Utilitzat per combinar dues o més condicions. Només és necessari que una de les condicions sigui certa.
+Seleccionar els clients amb id_client igual a 1 o amb nom "Anna".
+SELECT * FROM clients WHERE id_client = 1 OR nom = 'Anna';
+
+
+# NOT ( no ): Inverteix el valor de la condició. Si la condició és certa, es tornarà falsa, i viceversa.
+Seleccionar els clients que no tenen correu electrònic especificat.
+SELECT * FROM clients WHERE correu_electrònic IS NULL;
+
+
+# IN ( llista de valors ): Utilitzat per comprovar si un valor es troba en un conjunt de valors especificats.Seleccionar els clients amb id_client igual a 1, 2 o 3.SELECT * FROM clients WHERE id_client IN (1, 2, 3);
+
+
+# BETWEEN ( rang de valors ): Utilitzat per seleccionar valors dins d'un rang específic.
+Seleccionar els clients amb id_client entre 1 i 5.
+SELECT * FROM clients WHERE id_client BETWEEN 1 AND 5;
+
+# LIKE ( comparador de cadenes ): Utilitzat per fer cerques amb patrons de text. Es poden utilitzar comodins: % (zero o més caràcters) i _ (un sol caràcter).
+Seleccionar els clients amb noms que comencen amb "Jo".
+SELECT * FROM clients WHERE nom LIKE 'Jo%';
+
+També podem fer servir operadors matemàtics (+, -, *, /, % o MOD i DIV (divisió entera)
+
+Exemple: Select 3 * 5 AS Total;
+
+Select 3 * 5 AS Total;
++-------+
+| Total |
++-------+
+|    15 |
++-------+
+1 row in set (0,00 sec)
+
+Enlloc de 3 i 5 podem fer servir els valors de les columnes o atributs d'una taula.
+
+Select a * b AS Total;
+
+On a i b son atributs amb valors numèrics.
+
+
+
+# *******************************************************************************
+
+
+3) Selecciona el número de la comanda (num_comanda) i el descompte (dte), de les comandes que es van crear entre el 15 de desembre de 1989 i el 20 de gener de 1990.
+
+
+
+4) Llisteu la ciutat de les oficines de la regió 'Est' amb els seus objectius i vendes, ordenades de major a menor vendes.
+
+
+5) Llista els noms, oficines i dates de contracte de tots els venedors, ordenats a partir del contracte més antic.
+
+
+6) Quin és el nom, quota i les vendes dels empleats que el seu nom o cognom incorpora la lletra 'y' ordenat alfabèticament a partir de la primera columna de projecció de la consulta.
+
+
+7) Llisteu el nom i data de contracte de qualsevol venendor amb vendes superiors a 490000€
+
+
+8) Llisteu els venedors, les seves quotes i els seus directors, ordenats a partir de la menor quota on aquesta no podrà ser NULL i a més tots els venedors han de tenir un director assignat.
+
+
+
+9) Llisteu tots els productes amb la seva descripció i el valor del estoc actual.
+
+(Per exemple si d'un producte determinat tenim 3 unitats i el preu unitari es de 100, ha de mostrar 300)
+
+
+
+10) Per cada venedor mostra el seu nom, la seva quota (que ha de ser un valor numèric), les seves vendes i la nova quota que tindria si s'augmentés en el 3% de les vendes anuals d'aquell venedor. Ordena de més a menys quota.
+

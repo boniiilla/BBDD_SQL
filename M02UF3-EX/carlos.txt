@@ -1,0 +1,4 @@
+Connecting to localhost
+Selecting database empresa
+Loading data from LOCAL file: empleats into empleats
+Disconnecting from localhost

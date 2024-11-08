@@ -1,0 +1,8 @@
+comandos:
+En servidor màster:
+
+echo "SHOW MASTER STATUS\G; SHOW VARIABLES LIKE 'server_uuid'\G; SHOW FULL PROCESSLIST\G;" | mysql -u root -p@MVM2016 2>&1 > sortida_master.txt
+
+En servidor slave.
+
+echo "SHOW REPLICA STATUS\G; SHOW FULL PROCESSLIST\G;" | mysql -u root -p@MVM2016 2>&1 > sortida_slave.txt

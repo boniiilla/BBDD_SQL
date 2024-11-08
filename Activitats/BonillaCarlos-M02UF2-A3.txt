@@ -1,0 +1,380 @@
+1.- Llista les diferents regions del món, sense repeticions.
+
+SELECT co.region FROM Country co Group by co.region;
++---------------------------+
+| region                    |
++---------------------------+
+| Caribbean                 |
+| Southern and Central Asia |
+| Central Africa            |
+| Southern Europe           |
+| Middle East               |
+| South America             |
+| Polynesia                 |
+| Antarctica                |
+| Australia and New Zealand |
+| Western Europe            |
+| Eastern Africa            |
+| Western Africa            |
+| Eastern Europe            |
+| Central America           |
+| North America             |
+| Southeast Asia            |
+| Southern Africa           |
+| Eastern Asia              |
+| Nordic Countries          |
+| Northern Africa           |
+| Baltic Countries          |
+| Melanesia                 |
+| Micronesia                |
+| British Islands           |
+| Micronesia/Caribbean      |
++---------------------------+
+
+
+2.- Mostra els tres primers països ordenats per ordre alfabètic.
+
+SELECT co.Name FROM Country co Order by co.Name LIMIT 3;
++-------------+
+| Name        |
++-------------+
+| Afghanistan |
+| Albania     |
+| Algeria     |
++-------------+
+
+
+3.- Llista tots els països bàltics de la regió 'Baltic Countries';
+
+SELECT co.Name FROM Country co WHERE co.region = 'Baltic Countries';
++-----------+
+| Name      |
++-----------+
+| Estonia   |
+| Lithuania |
+| Latvia    |
++-----------+
+
+
+4.- Llista els noms de tots els països i l'esperança de vida (LifeExpectancy), on l'esperança de vida sigui inferior a 40 anys o superior a 80 i ordenat de forma ascendent pel camp d'esperança de vida.
+
+SELECT co.name, co.lifeexpectancy FROM Country co WHERE co.lifeexpectancy < 40 OR co.lifeexpectancy > 80 ORDER BY co.lifeexpectancy;
++------------+----------------+
+| name       | lifeexpectancy |
++------------+----------------+
+| Zambia     |           37.2 |
+| Mozambique |           37.5 |
+| Malawi     |           37.6 |
+| Zimbabwe   |           37.8 |
+| Angola     |           38.3 |
+| Botswana   |           39.3 |
+| Rwanda     |           39.3 |
+| Singapore  |           80.1 |
+| Japan      |           80.7 |
+| San Marino |           81.1 |
+| Macao      |           81.6 |
+| Andorra    |           83.5 |
++------------+----------------+
+
+
+5.- Mostra el nom i la població de les set ciutats més poblades del món.
+
+SELECT co.name, co.population FROM Country co ORDER BY co.population DESC LIMIT 7;
++--------------------+------------+
+| name               | population |
++--------------------+------------+
+| China              | 1277558000 |
+| India              | 1013662000 |
+| United States      |  278357000 |
+| Indonesia          |  212107000 |
+| Brazil             |  170115000 |
+| Pakistan           |  156483000 |
+| Russian Federation |  146934000 |
++--------------------+------------+
+
+
+6.- Mostra el nom del país, dels que tenen ciutats amb més de 7.000.000 d'habitants.
+
+SELECT DISTINCT co.name FROM Country co JOIN City ci ON co.code=ci.countrycode WHERE
+ci.population > 7000000;
++--------------------+
+| name               |
++--------------------+
+| Brazil             |
+| United Kingdom     |
+| Indonesia          |
+| India              |
+| Japan              |
+| China              |
+| South Korea        |
+| Mexico             |
+| Pakistan           |
+| Turkey             |
+| Russian Federation |
+| United States      |
++--------------------+
+
+
+7.- Quins són els 5 tipus o grups de govern més comuns en el món (aquells que tenen més nombre de països?) i quants països té cada grup, ordenat de més a menys.
+
+SELECT co.governmentform, COUNT(*) AS Num_Paisos FROM Country co GROUP BY co.governmentform ORDER BY Num_Paisos DESC LIMIT 5;
++-------------------------------+------------+
+| governmentform                | Num_Paisos |
++-------------------------------+------------+
+| Republic                      |        122 |
+| Constitutional Monarchy       |         29 |
+| Federal Republic              |         15 |
+| Dependent Territory of the UK |         12 |
+| Monarchy                      |          5 |
++-------------------------------+------------+
+
+
+8.- Llistar el nom del continent i la superfície mitjana total (etiqueta'l com: SupMitjana), dels països de cada continent ordenada de forma ascendent per la superfície.
+
+SELECT co.continent, AVG(co.surfacearea) AS SupMitjana FROM Country co GROUP BY co.co
+ntinent ORDER BY SupMitjana;
++---------------+----------------+
+| continent     | SupMitjana     |
++---------------+----------------+
+| Oceania       |  305867.642857 |
+| Europe        |  501068.128261 |
+| Africa        |  521558.224138 |
+| Asia          |  625117.745098 |
+| North America |  654445.135135 |
+| South America | 1276066.142857 |
+| Antarctica    | 2626420.200000 |
++---------------+----------------+
+
+
+9.- Mostra el nom de cada continent amb el càlcul de l'esperança mitjana de vida de cada continent ordenat de forma descendent per l'esperança de vida, (recordeu que cada país té diferent població).  
+https://www.idescat.cat/pub/?id=iev
+
+SELECT co.continent, AVG(co.lifeexpectancy) AS VidaMitjana FROM Country co GROUP BY co.continent ORDER BY VidaMitjana;
++---------------+-------------+
+| continent     | VidaMitjana |
++---------------+-------------+
+| Antarctica    |        NULL |
+| Africa        |    52.57193 |
+| Asia          |    67.44118 |
+| Oceania       |    69.71500 |
+| South America |    70.94615 |
+| North America |    72.99189 |
+| Europe        |    75.14773 |
++---------------+-------------+
+
+
+10.- Llistar el nom i la densitat de població, dels 5 països amb major densitat de població al món (només incloure països amb una superfície major que 10.000).
+
+SELECT co.name, co.population/co.surfacearea AS Densitat FROM Country co WHERE co.surfacearea > 10000 ORDER BY Densitat DESC LIMIT 5;
++-------------+------------+
+| name        | Densitat   |
++-------------+------------+
+| Bangladesh  | 896.922179 |
+| Taiwan      | 615.010501 |
+| South Korea | 471.106463 |
+| Netherlands | 382.025719 |
+| Belgium     | 335.506914 |
++-------------+------------+
+
+
+11.- Quants districtes diferents hi ha representats en la taula City?
+
+SELECT COUNT(DISTINCT ci.district) AS TotalDistricts FROM City ci;
++----------------+
+| TotalDistricts |
++----------------+
+|           1367 |
++----------------+
+
+
+12.- Llistar tots els idiomes que es parlen en més de 10 països.
+
+SELECT cl.language FROM CountryLanguage cl GROUP BY cl.language HAVING COUNT(cl.language) > 10;
++----------------+
+| language       |
++----------------+
+| English        |
+| Spanish        |
+| French         |
+| Portuguese     |
+| Arabic         |
+| Italian        |
+| Creole English |
+| German         |
+| Turkish        |
+| Russian        |
+| Ful            |
+| Ukrainian      |
+| Chinese        |
++----------------+
+
+
+13.- Mostra en un format vertical \G la llista de codi de pais, la llengua i quans n'hi han de cada tipus sense repeticions en que es parlen les diferents llengües del món, ordenat de més a menys paisos en que parla cada idioma i alfabèticament per l'idioma.
+
+SELECT  GROUP_CONCAT(cl.countrycode) AS CodisPaisos, cl.language, COUNT(cl.countrycode) AS TotalPaisos FROM CountryLanguage cl GROUP BY cl.language ORDER BY COUNT(cl.language) DESC, cl.language \G;
+
+
+14.- Mostra el nom de la ciutat 'Barcelona' i del pais on està ubicada.
+
+SELECT ci.name, co.name FROM City ci JOIN Country co ON ci.countrycode=co.code WHERE ci.name = 'Barcelona';
++-----------+-----------+
+| name      | name      |
++-----------+-----------+
+| Barcelona | Spain     |
+| Barcelona | Venezuela |
++-----------+-----------+
+
+
+15.- Mostra el nom i el nombre d'habitants de la ciutat amb menys habitants del món.
+
+SELECT ci.name, ci.population FROM City ci WHERE ci.population=(SELECT MIN(ci.population) FROM City ci);
++-----------+------------+
+| name      | population |
++-----------+------------+
+| Adamstown |         42 |
++-----------+------------+
+
+
+16.- Tots els atributs de totes les ciutats de Espanya, suposant que no conec el codi de pais, només el nom que és: 'Spain'.
+
+SELECT ci.* FROM City ci JOIN Country co ON ci.countrycode=co.code WHERE co.name IN('Spain');
++-----+---------------------------------+-------------+--------------------+------------+
+| ID  | Name                            | CountryCode | District           | Population |
++-----+---------------------------------+-------------+--------------------+------------+
+| 653 | Madrid                          | ESP         | Madrid             |    2879052 |
+| 654 | Barcelona                       | ESP         | Katalonia          |    1503451 |
+| 655 | Valencia                        | ESP         | Valencia           |     739412 |
+| 656 | Sevilla                         | ESP         | Andalusia          |     701927 |
+| 657 | Zaragoza                        | ESP         | Aragonia           |     603367 |
+| 658 | Málaga                          | ESP         | Andalusia          |     530553 |
+| 659 | Bilbao                          | ESP         | Baskimaa           |     357589 |
+| 660 | Las Palmas de Gran Canaria      | ESP         | Canary Islands     |     354757 |
+| 661 | Murcia                          | ESP         | Murcia             |     353504 |
+| 662 | Palma de Mallorca               | ESP         | Balears            |     326993 |
+| 663 | Valladolid                      | ESP         | Castilla and León  |     319998 |
+| 664 | Córdoba                         | ESP         | Andalusia          |     311708 |
+| 665 | Vigo                            | ESP         | Galicia            |     283670 |
+| 666 | Alicante [Alacant]              | ESP         | Valencia           |     272432 |
+| 667 | Gijón                           | ESP         | Asturia            |     267980 |
+| 668 | L´Hospitalet de Llobregat       | ESP         | Katalonia          |     247986 |
+| 669 | Granada                         | ESP         | Andalusia          |     244767 |
+| 670 | A Coruña (La Coruña)            | ESP         | Galicia            |     243402 |
+| 671 | Vitoria-Gasteiz                 | ESP         | Baskimaa           |     217154 |
+| 672 | Santa Cruz de Tenerife          | ESP         | Canary Islands     |     213050 |
+| 673 | Badalona                        | ESP         | Katalonia          |     209635 |
+| 674 | Oviedo                          | ESP         | Asturia            |     200453 |
+| 675 | Móstoles                        | ESP         | Madrid             |     195351 |
+| 676 | Elche [Elx]                     | ESP         | Valencia           |     193174 |
+| 677 | Sabadell                        | ESP         | Katalonia          |     184859 |
+| 678 | Santander                       | ESP         | Cantabria          |     184165 |
+| 679 | Jerez de la Frontera            | ESP         | Andalusia          |     182660 |
+| 680 | Pamplona [Iruña]                | ESP         | Navarra            |     180483 |
+| 681 | Donostia-San Sebastián          | ESP         | Baskimaa           |     179208 |
+| 682 | Cartagena                       | ESP         | Murcia             |     177709 |
+| 683 | Leganés                         | ESP         | Madrid             |     173163 |
+| 684 | Fuenlabrada                     | ESP         | Madrid             |     171173 |
+| 685 | Almería                         | ESP         | Andalusia          |     169027 |
+| 686 | Terrassa                        | ESP         | Katalonia          |     168695 |
+| 687 | Alcalá de Henares               | ESP         | Madrid             |     164463 |
+| 688 | Burgos                          | ESP         | Castilla and León  |     162802 |
+| 689 | Salamanca                       | ESP         | Castilla and León  |     158720 |
+| 690 | Albacete                        | ESP         | Kastilia-La Mancha |     147527 |
+| 691 | Getafe                          | ESP         | Madrid             |     145371 |
+| 692 | Cádiz                           | ESP         | Andalusia          |     142449 |
+| 693 | Alcorcón                        | ESP         | Madrid             |     142048 |
+| 694 | Huelva                          | ESP         | Andalusia          |     140583 |
+| 695 | León                            | ESP         | Castilla and León  |     139809 |
+| 696 | Castellón de la Plana [Castell  | ESP         | Valencia           |     139712 |
+| 697 | Badajoz                         | ESP         | Extremadura        |     136613 |
+| 698 | [San Cristóbal de] la Laguna    | ESP         | Canary Islands     |     127945 |
+| 699 | Logroño                         | ESP         | La Rioja           |     127093 |
+| 700 | Santa Coloma de Gramenet        | ESP         | Katalonia          |     120802 |
+| 701 | Tarragona                       | ESP         | Katalonia          |     113016 |
+| 702 | Lleida (Lérida)                 | ESP         | Katalonia          |     112207 |
+| 703 | Jaén                            | ESP         | Andalusia          |     109247 |
+| 704 | Ourense (Orense)                | ESP         | Galicia            |     109120 |
+| 705 | Mataró                          | ESP         | Katalonia          |     104095 |
+| 706 | Algeciras                       | ESP         | Andalusia          |     103106 |
+| 707 | Marbella                        | ESP         | Andalusia          |     101144 |
+| 708 | Barakaldo                       | ESP         | Baskimaa           |      98212 |
+| 709 | Dos Hermanas                    | ESP         | Andalusia          |      94591 |
+| 710 | Santiago de Compostela          | ESP         | Galicia            |      93745 |
+| 711 | Torrejón de Ardoz               | ESP         | Madrid             |      92262 |
++-----+---------------------------------+-------------+--------------------+------------+
+
+
+17.- Digues quin és el total de població de les ciutats que pertanyen al districte de 'New York'
+
+SELECT SUM(ci.population) AS Poblacio_NewYork FROM City ci WHERE ci.district IN('New York');
++------------------+
+| Poblacio_NewYork |
++------------------+
+|          8958085 |
++------------------+
+
+
+18.- Digues quin és el total de població de les ciutats que pertanyen al districte de 'New York' però sense poder fer servir en la teva sentència la claúsula WHERE.
+
+SELECT SUM(ci.population) AS Poblacio_NewYork FROM City ci GROUP BY ci.district HAVING ci.district IN('New York');
++------------------+
+| Poblacio_NewYork |
++------------------+
+|          8958085 |
++------------------+
+
+19.- Mostra el nom dels països que tenen ciutats on la seva població supera els 9 mil·lions d'habitants.
+
+SELECT co.name, ci.population FROM Country co JOIN City ci ON co.code=ci.countrycode WHERE ci.population > 9000000;
++-------------+------------+
+| name        | population |
++-------------+------------+
+| Brazil      |    9968485 |
+| Indonesia   |    9604900 |
+| India       |   10500000 |
+| China       |    9696300 |
+| South Korea |    9981619 |
+| Pakistan    |    9269265 |
++-------------+------------+
+
+
+20.- Quines formes de govern hi ha als països on l'idioma és l'anglès?
+
+SELECT DISTINCT co.governmentform FROM Country co JOIN CountryLanguage cl ON co.code=cl.countryco
+de WHERE cl.language = 'English';
++----------------------------------------------+
+| governmentform                               |
++----------------------------------------------+
+| Nonmetropolitan Territory of The Netherlands |
+| Dependent Territory of the UK                |
+| US Territory                                 |
+| Constitutional Monarchy                      |
+| Constitutional Monarchy, Federation          |
+| Monarchy (Emirate)                           |
+| Monarchy (Sultanate)                         |
+| Territory of Australia                       |
+| Nonmetropolitan Territory of New Zealand     |
+| Special Administrative Region of China       |
+| Republic                                     |
+| Constitutional Monarchy (Emirate)            |
+| Commonwealth of the US                       |
+| Monarchy                                     |
+| Dependent Territory of the US                |
+| Federal Republic                             |
+| Parlementary Monarchy                        |
++----------------------------------------------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

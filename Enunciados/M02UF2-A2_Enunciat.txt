@@ -1,0 +1,157 @@
+BBDD vendesK21
+
+*** Inclou consultes agregades ***
+
+*************************
+*** JOIN (Combinació) ***
+*************************
+
+Permet unir horitzontalment dues taules amb les columnes i valors de cada taula com a una nova relació, a partir d'atributs clau que són comuns (claus de reunió).
+
+La clau o claus de reunió, normalment és aquella que és clau primària en una taula i forana en l'altra.
+
+La finalitat de la combinació o JOIN és poder tenir una relació nova, en la que tindrem les columnes de la taula a l'esquerra del JOIN i els seus valors, juntament amb les columnes de la taula de la dreta del JOIN amb els seus valors i només aquells, que son correspondència entre ells.
+
+Exemple: Imaginem que tots els alumnes d'un aula es coloquen una engantxina amb un número diferent que els identifica i un altre número igual l'enganxem a darrera dels seus mòbils. Si fiquen tots els mòbils en una caixa que recolliran al sortir de classe, el profe que ha de entregar cada mòbil, només haurà de cridar el número que té cada mòbil i lliurar-lo a l'alumne que té el mateix número. Això és la correspondència de claus. Si un alumne tingúes dos mòbils, cadascú hauria de portar enganxat el mateix número que te l'alumne i per tant cada vegada que aparegués, el recolliria la mateixa persona.
+
+
+Veiem un exemple ara, amb la BBDD `vk21` i les taules venedors i oficines (que són les oficines on treballa cada venedor).
+
+SELECT * From oficines o JOIN venedors v ON(o.oficina=v.oficina_ven);
+
+En aquest cas hem reanomenat oficines amb la lletra 'o' i venedors amb la lletra 'v' de forma que simpliquem la consulta.
+
+Si només volem unes columnes determinades de cada taula, per exemple: El nom del venedor i el seu titol i d'oficines la ciutat on està situada..
+
+SELECT o.ciutat, v.nom, v.titol From oficines o JOIN venedors v ON(o.oficina=v.oficina_ven);
+
+Si a més, a la consulta anterior li afegim la restricció de que només volem aquells que treballin a 'Chicago'
+
+SELECT o.ciutat, v.nom, v.titol From oficines o JOIN venedors v ON(o.oficina=v.oficina_ven) WHERE o.ciutat = 'Chicago';
++---------+-------------+----------+
+| ciutat  | nom         | titol    |
++---------+-------------+----------+
+| Chicago | Dan Roberts | Venedor  |
+| Chicago | Paul Cruz   | Venedor  |
+| Chicago | Bob Smith   | Director |
++---------+-------------+----------+
+3 rows in set (0,00 sec)
+
+****************************
+*** GROUP BY (Agregació) ***
+****************************
+
+Podem realitzar operacions sobre un conjunt de dades agrupades o que pertanyen a un mateix grup.
+
+Si de les consultes anteriors, volguéssim obtenir quants venedors treballen en cadascuna de les diferents ciutat:
+
+SELECT o.ciutat, count(v.num_ven) as Num_Venedors From oficines o JOIN venedors v ON(o.oficina=v.oficina_ven) GROUP BY o.ciutat;
++-------------+--------------+
+| ciutat      | Num_Venedors |
++-------------+--------------+
+| New York    |            2 |
+| Chicago     |            3 |
+| Atlanta     |            1 |
+| Los Angeles |            2 |
+| Denver      |            1 |
++-------------+--------------+
+5 rows in set (0,00 sec)
+
+Però si a més, necessitem obtenir només aquelles ciutats on el número de venedors és major que 2, aleshores hem de crear una condició, però aquesta és sobre un resultat d'agregació, per tant la condició no serà amb WHERE sino amb HAVING.
+
+SELECT o.ciutat, count(v.num_ven) as Num_Venedors From oficines o JOIN venedors v ON(o.oficina=v.oficina_ven) GROUP BY o.ciutat HAVING Num_Venedors > 2;
++---------+--------------+
+| ciutat  | Num_Venedors |
++---------+--------------+
+| Chicago |            3 |
++---------+--------------+
+1 row in set (0,00 sec)
+
+
+Les funcions agregades més usuals que podem realitzar són: 
+
+COUNT() Comptar registres
+SUM()   Sumar valors numèrics
+AVG()   Calcular la mitjana numèrica
+MIN()   Calcular el valor mínim
+MAX()   Calcular el valor màxim
+GROUP_CONCAT() Torna un conjunt de valors de cadena de caràcters, separats per comes.
+
+etc..
+
+Per exemple, si en la consulta d'agregació on voliem saber quants venedors treballen en cada ciutat, a més del seu número, volem saber qui són:
+
+SELECT o.ciutat, count(v.num_ven) as Num_Venedors, GROUP_CONCAT(nom) as Noms_Venedors From oficines o JOIN venedors v ON(o.oficina=v.oficina_ven) GROUP BY o.ciutat;
++-------------+--------------+---------------------------------+
+| ciutat      | Num_Venedors | Noms_Venedors                   |
++-------------+--------------+---------------------------------+
+| Atlanta     |            1 | Bill Adams                      |
+| Chicago     |            3 | Dan Roberts,Paul Cruz,Bob Smith |
+| Denver      |            1 | Nancy Angelli                   |
+| Los Angeles |            2 | Sue Smith,Larry Fitch           |
+| New York    |            2 | Sam Clark,Mary Jones            |
++-------------+--------------+---------------------------------+
+5 rows in set (0,01 sec)
+
+
+*** Recordatori ***
+
+
+En la BBDD `vk21` igual que en `vendes`, tenim dues taules que tenen una important relació entre si:
+
+comandes i detall
+
+comandes: Cada comanda equival a una compra d'un client en una data determinada.
+
+detall: Cada registre o línia de detall pertany a una comanda determinada i cada comanda podrà tenir més d'una línia o registre en la taula detall. Cadascuna de les línies de detall, són els diferents productes que es van comprar en la comanda.
+
+Ve a ser com una factura o tiquet (comanda) i els diferents articles que hem comprat (detall).
+
+Per tant, el valor de cada comanda, serà igual al sumatori de cada producte sobre la quantitat de productes comprats en cada comanda pel preu de cada article.
+
+Si volem saber quants articles vam comprar en la comanda 112975 i quin va ser el seu import:
+
+SELECT num_comanda, count(*) as Articles, SUM(quantitat * preu) as Import_Comanda FROM detall WHERE num_comanda = 112975;
++-------------+----------+----------------+
+| num_comanda | Articles | Import_Comanda |
++-------------+----------+----------------+
+|      112975 |        3 |        4655.00 |
++-------------+----------+----------------+
+1 row in set (0,00 sec)
+
+
+*********************************************************************************************
+
+
+
+*** Consultes ***
+
+
+1.- Quina és la comanda i el seu valor (sense aplicar ni IVA ni descompte) que té el mínim import total de comanda.
+
+
+2.- A quina Societat i a quin nom de venedor, pertany la comanda de major import. Projecta també el número de comanda.
+
+
+3.- Quina és la comanda i el número de productes que s'han comprat, en la comanda que més productes diferents ha comprat.
+
+
+4.- Quina és la comanda/es, el fabricant i la quantitat de productes comprats, ordenats de menys a més, de les comandes que tenen més de 3 productes del fabricant 'bio'.
+
+
+5.- Quines són les comandes, nom de venedor, societat i quantitat dels diferents productes de cada línia de detall, en les que el número dels diferents productes adquirits és major que 6 i no els ha venut ni Bill Adams, ni Dan Roberts ni tampoc la Nancy Angelli.
+
+
+6.- Quins son les dades dels productes i les línies de detall, de les comandes on la quantitat venuda de cop d'un producte és 50 uds.
+
+
+7.- Projecta el nom de cada venedor i el total de les vendes, ordenades de més a menys import total de vendes.
+
+
+8.- Quines són les dades dels venedors dels que desconeixem les quotes assignades.
+
+
+9.- Quins han estat els cinc productes dels que s'han venut, més número d'unitats de producte en el total de les comandes i que cap no pertany al fabricant 'bio'. Projecta el fabricant, producte i número d'unitats totals venudes de més a menys.
+
+
+10.- Quines són les dades dels clients que han fet més de 10 comandes i quantes ha fet cadascú?

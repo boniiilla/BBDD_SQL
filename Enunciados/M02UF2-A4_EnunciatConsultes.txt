@@ -1,0 +1,39 @@
+Agència de viatges
+
+L'agència ven paquets de viatge que com a mínim inclouran el vol, on el preu per persona d'aquest serà l'inclos com preu a la taula Viatges. El vol pot tenir escales amb la qual cosa, es converteix en dos o més vols però amb el mateix preu de viatge.
+
+També es pot comprar una estada en un o mes hotels amb habitacions individuals i/o dobles dels que tindrem cada preu d'habitació per separat.
+
+Es demana el següent:
+
+
+1. Visualitza la informació dels clients (NIF, nom i adreça) junt a l’origen i destí del viatge que fa cadascú.
+
+
+2. Visualitza els noms dels clients que han reservat únicament una habitació doble.
+
+
+3. Visualitza tota la informació dels clients que viatjaran en algun dels vols organitzats per Iberia durant el mes de Març de 2017 (Nif, Nom client, adreça, telèfon i codi de viatge). Ordena el resultat alfabèticament pel nom.
+
+
+4. Visualitza els viatges amb ofertes d’hotels de cinc estrelles (Codi del Viatge, Origen, Desti, Nom del Hotel, Preu i Categoria). Ordena el resultat per preu de més barat a més car.
+
+
+5. Visualitza el nom i la ciutat del client junt a la ciutat d’origen dels vols que agafin, indicant també els seus codis de viatge i de vol i ordenat per codi de viatge ascendent.
+
+
+6. Visualitza el NIF, el nom del client i el preu gastat en cadascun dels viatges que ha fet, tenint en compte el nombre de places reservades. Anomena a aquest últim atribut de sortida Preu_Total. Ordena el resultat per NIF de  forma descendent.
+
+
+
+7. Visualitza el nom dels clients i el nom dels hotels a on estan allotjats. 
+
+
+8. Visualitza l'origen i destí dels viatges el codi de vol i de viatge i les ciutats on fan escala, els vols amb data de sortida entre 22/02/2017 i 24/02/2017 ambdós incloses.
+
+
+9. Visualitza els noms de les destinacions, hotels i la categoria, que s’utilitzaran en els viatges amb destinació Buenos Aires o Barcelona. Ordena el resultat per ciutat de forma descendent.
+
+
+10. Visualitza els noms dels clients (mostrant Nom Client), els noms dels hotels (mostrant Nom Hotel) i la ciutat del hotel, d'aquells clients que han reservat únicament una habitació doble.
+

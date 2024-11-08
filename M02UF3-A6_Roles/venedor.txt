@@ -1,0 +1,12 @@
+num_comanda	descripcio	data_comanda	clie	ven	iva	dte
+112885	Autoservei	1989-06-15	2102	101	21	0
+112950	Autoservei	1995-11-21	2107	110	21	0
+112963	Comanda client VIP	1995-12-17	2103	105	21	0
+112968	Comanda client VIP	1989-12-10	2102	101	21	0
+112975	Comanda client VIP	1989-10-12	2111	103	21	0
+num_comanda	fab	producte	quantitat	preu
+112885	imm	887p	3	375.00
+112950	foo	112	10	148.00
+112963	aci	41004	28	117.00
+112968	aci	41004	34	117.00
+112975	aci	4100x	5	25.00

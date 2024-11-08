@@ -1,0 +1,13 @@
+1. Troba totes les cases que tenen més de dues plantes:
+SELECT * FROM casa WHERE num_plantes > 2;
+
+2. Llista tots els pisos que estan a la primera planta:
+SELECT * FROM pis WHERE num_planta = 'planta 1ª';
+
+3. Obtén totes les característiques que tenen piscina:
+SELECT * FROM caracteristiques WHERE piscina = 1;
+
+4. Mostra totes les vivendes amb una superfície superior a 100 metres quadrats i que estiguin en bon estat de conservació:
+SELECT * FROM vivenda WHERE superficie_vivenda > 100 AND estat_conservacio = 'Reformada';
+
+

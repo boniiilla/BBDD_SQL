@@ -1,0 +1,94 @@
+show tables;
++-------------------+
+| Tables_in_gramola |
++-------------------+
+| concerts          |
+| contractes        |
+| discografia       |
+| discos            |
+| genere            |
+| grups             |
+| municipi          |
+| provincia         |
++-------------------+
+
+desc concerts;
++------------+--------------------------+------+-----+---------+----------------+
+| Field      | Type                     | Null | Key | Default | Extra          |
++------------+--------------------------+------+-----+---------+----------------+
+| id_concert | int                      | NO   | PRI | NULL    | auto_increment |
+| codi_grup  | int                      | YES  | MUL | NULL    |                |
+| data       | date                     | YES  |     | NULL    |                |
+| hora       | time                     | YES  |     | NULL    |                |
+| codimun    | int(4) unsigned zerofill | YES  | MUL | NULL    |                |
+| preu_pista | float                    | YES  |     | NULL    |                |
+| preu_grada | float                    | YES  |     | NULL    |                |
++------------+--------------------------+------+-----+---------+----------------+
+
+desc contractes;
++-----------------+-------------+------+-----+---------+----------------+
+| Field           | Type        | Null | Key | Default | Extra          |
++-----------------+-------------+------+-----+---------+----------------+
+| id_contracte    | int         | NO   | PRI | NULL    | auto_increment |
+| NIF_discografia | varchar(10) | YES  | MUL | NULL    |                |
+| codi_grup       | int         | YES  | MUL | NULL    |                |
+| data_inici      | date        | YES  |     | NULL    |                |
+| data_final      | date        | YES  |     | NULL    |                |
++-----------------+-------------+------+-----+---------+----------------+
+
+desc discografia;
++-------+--------------+------+-----+---------+-------+
+| Field | Type         | Null | Key | Default | Extra |
++-------+--------------+------+-----+---------+-------+
+| NIF   | varchar(10)  | NO   | PRI | NULL    |       |
+| nom   | varchar(24)  | YES  | UNI | NULL    |       |
+| email | varchar(64)  | YES  |     | NULL    |       |
+| web   | varchar(100) | YES  |     | NULL    |       |
++-------+--------------+------+-----+---------+-------+
+
+desc discos;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| codi_grup  | int         | NO   | PRI | NULL    |       |
+| titol      | varchar(64) | YES  |     | NULL    |       |
+| any        | int         | NO   | PRI | NULL    |       |
+| durada     | time        | YES  |     | NULL    |       |
+| pressupost | float       | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+
+desc genere;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| id_gen  | int         | NO   | PRI | NULL    | auto_increment |
+| nom_gen | varchar(24) | YES  | UNI | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+
+desc grups;
++-------------+-------------+------+-----+---------+----------------+
+| Field       | Type        | Null | Key | Default | Extra          |
++-------------+-------------+------+-----+---------+----------------+
+| codi_grup   | int         | NO   | PRI | NULL    | auto_increment |
+| nom_grup    | varchar(24) | YES  | UNI | NULL    |                |
+| id_gen      | int         | YES  | MUL | NULL    |                |
+| any_creacio | int         | YES  |     | NULL    |                |
++-------------+-------------+------+-----+---------+----------------+
+
+desc municipi;
++--------------+--------------------------+------+-----+---------+-------+
+| Field        | Type                     | Null | Key | Default | Extra |
++--------------+--------------------------+------+-----+---------+-------+
+| codimun      | int(4) unsigned zerofill | NO   | PRI | NULL    |       |
+| codiprov     | int(2) unsigned zerofill | NO   | PRI | NULL    |       |
+| nom_municipi | varchar(44)              | YES  |     | NULL    |       |
++--------------+--------------------------+------+-----+---------+-------+
+
+desc provincia;
++---------------+--------------------------+------+-----+---------+-------+
+| Field         | Type                     | Null | Key | Default | Extra |
++---------------+--------------------------+------+-----+---------+-------+
+| codiprov      | int(2) unsigned zerofill | NO   | PRI | NULL    |       |
+| nom_provincia | varchar(24)              | YES  | UNI | NULL    |       |
++---------------+--------------------------+------+-----+---------+-------+
+

@@ -1,0 +1,72 @@
+Base de dades world
+
+Crea la BBDD de nom world i carrega l'arxiu world_innodb.sql
+1.- Llista les diferents regions del món, sense repeticions.
+
+2.- Mostra els tres primers països ordenats per ordre alfabètic.
+
+3.- Llista tots els països bàltics de la regió 'Baltic Countries';
+
+4.- Llista els noms de tots els països i l'esperança de vida (LifeExpectancy), on l'esperança de vida sigui inferior a 40 anys o superior a 80 i ordenat de forma ascendent pel camp d'esperança de vida.
+
+5.- Mostra el nom i la població de les set ciutats més poblades del món.
+
+6.- Mostra el nom del país, dels que tenen ciutats amb més de 7.000.000 d'habitants.
+
+7.- Quins són els 5 tipus o grups de govern més comuns en el món (aquells que tenen més nombre de països?) i quants països té cada grup, ordenat de més a menys.
+
+8.- Llistar el nom del continent i la superfície mitjana total (etiqueta'l com: SupMitjana), dels països de cada continent ordenada de forma ascendent per la superfície.
+
+9.- Mostra el nom de cada continent amb el càlcul de l'esperança mitjana de vida de cada continent ordenat de forma descendent per l'esperança de vida, (recordeu que cada país té diferent població).  
+https://www.idescat.cat/pub/?id=iev
+
+10.- Llistar el nom i la densitat de població, dels 5 països amb major densitat de població al món (només incloure països amb una superfície major que 10.000).
+
+11.- Quants districtes diferents hi ha representats en la taula City?
+
+12.- Llistar tots els idiomes que es parlen en més de 10 països.
+
+
+
+*** En la següent consulta... ***
+A més de la sortida vertical \G enlloc de ; hauràs de fer servir la funció agregada Group_Concat() 
+***
+13.- Mostra en un format vertical \G la llista de codi de pais, la llengua i quans n'hi han de cada tipus sense repeticions en que es parlen les diferents llengües del món, ordenat de més a menys paisos en que parla cada idioma i alfabèticament per l'idioma.
+
+14.- Mostra el nom de la ciutat 'Barcelona' i del pais on està ubicada.
+
+15.- Mostra el nom i el nombre d'habitants de la ciutat amb menys habitants del món.
+
+
+*** Següent consulta ***
+#
+# CLAUSULA IN
+#
+# Per comprovar si un valor coincideix amb els elements d'una llista utilitzarem IN, i per veure si no coincideix, NOT IN: Equivalent a fer servir OR crea una llista d'elements per comparar de forma lògica.
+#
+SELECT nom_columnes_a_seleccionar
+FROM taula_a_consultar
+WHERE columna [NOT] IN (valor1, ..., valorN);
+#
+
+16.- Tots els atributs de totes les ciutats de Espanya, suposant que no conec el codi de pais, només el nom que és: 'Spain'.
+
+17.- Digues quin és el total de població de les ciutats que pertanyen al districte de 'New York'
+
+18.- Digues quin és el total de població de les ciutats que pertanyen al districte de 'New York' però sense poder fer servir en la teva sentència la claúsula WHERE.
+
+19.- Mostra el nom dels països que tenen ciutats on la seva població supera els 9 mil·lions d'habitants.
+
+
+*** Següent consulta ***
+#
+# CLAUSULA EXISTS
+#
+# Per comprovar si una subconsulta produeix alguna fila de resultats, podem utilitzar la sentència denominada test d'existència: EXISTS. Per comprovar si una subconsulta no produeix cap fila de resultats, podem utilitzar NOT EXISTS.
+#
+SELECT nom_columnes_a_seleccionar
+FROM taula_a_consultar
+WHERE [NOT] EXISTS subconsulta;
+#
+
+20.- Quines formes de govern hi ha als països on l'idioma és l'anglès?

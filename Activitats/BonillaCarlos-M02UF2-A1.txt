@@ -1,0 +1,185 @@
+1) Llisteu totes les oficines amb els seus objectius i vendes reals.
+
+SELECT oficines.oficina, oficines.objectiu, oficines.vendes FROM oficines;
++---------+----------+--------+
+| oficina | objectiu | vendes |
++---------+----------+--------+
+|      11 |   575000 | 692637 |
+|      12 |   800000 | 735042 |
+|      13 |   350000 | 367911 |
+|      21 |   725000 | 835915 |
+|      22 |   300000 | 186042 |
++---------+----------+--------+
+
+
+2) Projecta el nom de les societats del clients amb l'idioma assignat, ordenant el resultat per idioma i de forma descendent.
+
+SELECT clients.societat, clients.idioma FROM clients ORDER BY idioma DESC;
++-------------------+----------+
+| societat          | idioma   |
++-------------------+----------+
+| Carter & Sons     | Rus      |
+| Three-Way Lines   | Frances  |
+| Fred Lewis Corp.  | Frances  |
+| Solomon Inc       | Frances  |
+| Zetacorp          | Italia   |
+| Smithson Corp     | Italia   |
+| Orion Corp        | Italia   |
+| Ian & Schmidt     | Angles   |
+| Peter Brothers    | Angles   |
+| QMA Assoc         | Angles   |
+| Rico Enterprises  | Angles   |
+| J.P. Sinclair     | Angles   |
+| Jones Mfg         | Angles   |
+| Acme Mfg          | Angles   |
+| First Corp        | Angles   |
+| Holm & Landis     | Catala   |
+| AAA Investments   | Catala   |
+| Midwest Systems   | Castella |
+| Ace International | Castella |
+| JCP Inc           | Alemany  |
+| Chen Associates   | Alemany  |
++-------------------+----------+
+
+
+3) Selecciona el número de la comanda (num_comanda) i el descompte (dte), de les comandes que es van crear entre el 15 de desembre de 1989 i el 20 de gener de 1990.
+
+SELECT comandes.num_comanda, comandes.dte FROM comandes WHERE data_comanda BETWEEN "1989-12-15" AND "1990-01-20";
++-------------+------+
+| num_comanda | dte  |
++-------------+------+
+|      112963 |    0 |
+|      112983 |    0 |
+|      112987 |    5 |
+|      112989 |    5 |
+|      113013 |    0 |
+|      113024 |    0 |
++-------------+------+
+
+
+4) Llisteu la ciutat de les oficines de la regió 'Est' amb els seus objectius i vendes, ordenades de major a menor vendes.
+
+SELECT oficines.ciutat, oficines.objectiu, oficines.vendes FROM oficines WHERE regio = "Est" ORDER BY vendes DESC;
++----------+----------+--------+
+| ciutat   | objectiu | vendes |
++----------+----------+--------+
+| Chicago  |   800000 | 735042 |
+| New York |   575000 | 692637 |
+| Atlanta  |   350000 | 367911 |
++----------+----------+--------+
+
+
+5) Llista els noms, oficines i dates de contracte de tots els venedors, ordenats a partir del contracte més antic.
+
+SELECT venedors.nom, venedors.oficina_ven, venedors.contracte FROM venedors ORDER BY
+contracte;
++---------------+-------------+------------+
+| nom           | oficina_ven | contracte  |
++---------------+-------------+------------+
+| Dan Roberts   |          12 | 1986-10-20 |
+| Sue Smith     |          21 | 1986-12-10 |
+| Paul Cruz     |          12 | 1987-03-01 |
+| Bob Smith     |          12 | 1987-05-19 |
+| Sam Clark     |          11 | 1988-06-14 |
+| Larry Fitch   |          21 | 1989-12-10 |
+| Tom Snyder    |        NULL | 1990-01-13 |
+| Bill Adams    |          13 | 1998-02-12 |
+| Mary Jones    |          11 | 2000-10-12 |
+| Nancy Angelli |          22 | 2005-11-14 |
++---------------+-------------+------------+
+
+
+6) Quin és el nom, quota i les vendes dels empleats que el seu nom o cognom incorpora la lletra 'y' ordenat alfabèticament a partir de la primera columna de projecció de la consulta.
+
+SELECT venedors.nom, venedors.quota, venedors.vendes FROM venedors WHERE nom LIKE "%y%" ORDER BY nom;
++---------------+--------+--------+
+| nom           | quota  | vendes |
++---------------+--------+--------+
+| Larry Fitch   | 350000 | 361865 |
+| Mary Jones    | 300000 | 392725 |
+| Nancy Angelli | 300000 | 186042 |
+| Tom Snyder    |   NULL |  79451 |
++---------------+--------+--------+
+
+
+7) Llisteu el nom i data de contracte de qualsevol venendor amb vendes superiors a 490000€
+
+SELECT venedors.nom, venedors.contracte FROM venedors WHERE vendes > 490000;
+Empty set (0,00 sec)
+
+
+8) Llisteu els venedors, les seves quotes i els seus directors, ordenats a partir de la menor quota on aquesta no podrà ser NULL i a més tots els venedors han de tenir un director assignat.
+
+SELECT venedors.nom, venedors.quota, venedors.director FROM venedors WHERE director
+AND quota IS NOT NULL ORDER BY quota;
++---------------+--------+----------+
+| nom           | quota  | director |
++---------------+--------+----------+
+| Bob Smith     | 200000 |      106 |
+| Paul Cruz     | 275000 |      104 |
+| Dan Roberts   | 300000 |      104 |
+| Nancy Angelli | 300000 |      108 |
+| Mary Jones    | 300000 |      106 |
+| Sue Smith     | 350000 |      108 |
+| Bill Adams    | 350000 |      104 |
+| Larry Fitch   | 350000 |      106 |
++---------------+--------+----------+
+
+
+9) Llisteu tots els productes amb la seva descripció i el valor del estoc actual.
+
+(Per exemple si d'un producte determinat tenim 3 unitats i el preu unitari es de 100, ha de mostrar 300)
+
+SELECT productes.id_producte, productes.descripcio, productes.precio * productes.stock AS "Valor del Estoc" FROM productes;
++-------------+--------------------+-----------------+
+| id_producte | descripcio         | Valor del Estoc |
++-------------+--------------------+-----------------+
+| 41001       | Articulo Tipo 1    |        14905.00 |
+| 41002       | Articulo Tipo 2    |        12616.00 |
+| 41003       | Articulo Tipo 3    |        21400.00 |
+| 41004       | Articulo Tipo 4    |        15912.00 |
+| 4100x       | Ajustador          |          725.00 |
+| 4100y       | Desmontador        |        66000.00 |
+| 4100z       | Montador           |        70000.00 |
+| 41003       | Tirador            |            0.00 |
+| 41089       | Reten              |        17550.00 |
+| 41672       | Placa              |            0.00 |
+| 112         | Cubierta           |        17020.00 |
+| 114         | Bancada Motor      |         1215.00 |
+| 773c        | Abrazadera 300-lb  |        27300.00 |
+| 775c        | Abrazadera 500-lb  |         7125.00 |
+| 779c        | Abrazadera 900-lb  |        16875.00 |
+| 887h        | Soporte Abrazadera |        12042.00 |
+| 887p        | Perno Abrazadera   |         6000.00 |
+| 887x        | Reten Abrazadera   |        15200.00 |
+| xk47        | Reductor           |        13490.00 |
+| xk48        | Reductor           |        27202.00 |
+| xk48a       | Reductor           |         4329.00 |
+| 2a44g       | Pasador Bisagra    |         4900.00 |
+| 2a44l       | Bisagra Izqda.     |        54000.00 |
+| 2a44r       | Bisagra Dcha.      |        54000.00 |
+| 2a45c       | Union  Trinquete   |        15800.00 |
++-------------+--------------------+-----------------+
+
+
+10) Per cada venedor mostra el seu nom, la seva quota (que ha de ser un valor numèric), les seves vendes i la nova quota que tindria si s'augmentés en el 3% de les vendes anuals d'aquell venedor. Ordena de més a menys quota.
+
+
+SELECT venedors.nom, venedors.quota, venedors.vendes, (venedors.quota + venedors.vendes * 0.03) AS "Nova Quota" FROM venedors WHERE quota IS NOT NULL ORDER BY quota DESC;
++---------------+--------+--------+------------+
+| nom           | quota  | vendes | Nova Quota |
++---------------+--------+--------+------------+
+| Sue Smith     | 350000 | 474050 |  364221.50 |
+| Bill Adams    | 350000 | 367911 |  361037.33 |
+| Larry Fitch   | 350000 | 361865 |  360855.95 |
+| Dan Roberts   | 300000 | 307925 |  309237.75 |
+| Nancy Angelli | 300000 | 186042 |  305581.26 |
+| Mary Jones    | 300000 | 392725 |  311781.75 |
+| Paul Cruz     | 275000 | 289330 |  283679.90 |
+| Sam Clark     | 275000 | 299967 |  283999.01 |
+| Bob Smith     | 200000 | 142594 |  204277.82 |
++---------------+--------+--------+------------+
+
+
+
+

@@ -1,0 +1,329 @@
+1.- Quina és la comanda i el seu valor (sense aplicar ni IVA ni descompte) que té el mínim import total de comanda.
+
+Select detall.num_comanda, SUM(detall.preu) AS Preu_Total From detall Group By detall.num_comanda Order By SUM(detall.preu) LIMIT 1;
++-------------+------------+
+| num_comanda | Preu_Total |
++-------------+------------+
+|      113057 |      25.00 |
++-------------+------------+
+
+
+2.- A quina Societat i a quin nom de venedor, pertany la comanda de major import. Projecta també el número de comanda.
+
+Select clients.societat AS Societat_Client, venedors.nom as Nom_Venedors, detall.num_comanda From detall JOIN comandes LEFT JOIN clients ON (comandes.clie=clients.num_clie) RIGHT Join venedors ON(comandes.ven=venedors.num_ven) USING (num_comanda) Group By detall.num_comanda Order By SUM(detall.preu) DESC Limit 1;
++-----------------+--------------+-------------+
+| Societat_Client | Nom_Venedors | num_comanda |
++-----------------+--------------+-------------+
+| Peter Brothers  | Sam Clark    |      113159 |
++-----------------+--------------+-------------+
+
+
+3.- Quina és la comanda i el número de productes que s'han comprat, en la comanda que més productes diferents ha comprat.
+
+Select detall.num_comanda, count(detall.num_comanda) AS 'Productes_Diferents', Sum(detall.quantitat) AS 'Total_Productes' From detall Group By detall.num_comanda Order by count(detall.num_comanda) Desc, sum(detall.quantitat) DESC LIMIT 1;
++-------------+---------------------+-----------------+
+| num_comanda | Productes_Diferents | Total_Productes |
++-------------+---------------------+-----------------+
+|      113190 |                   7 |            3088 |
++-------------+---------------------+-----------------+
+
+
+4.- Quina és la comanda/es, el fabricant i la quantitat de productes comprats, ordenats de menys a més, de les comandes que tenen més de 3 productes del fabricant 'bio'.
+
+Select detall.num_comanda, detall.fab, Sum(detall.quantitat) AS Total_Productes_Comprats From detall Where detall.fab = 'bio' Group By detall.num_comanda Having count(detall.fab = 'bio') >= 3 Order By Sum(detall.quantitat);
++-------------+-----+--------------------------+
+| num_comanda | fab | Total_Productes_Comprats |
++-------------+-----+--------------------------+
+|      113099 | bio |                       25 |
+|      113070 | bio |                       45 |
+|      113209 | bio |                     1131 |
+|      113213 | bio |                     1736 |
+|      113225 | bio |                     1753 |
+|      113133 | bio |                     1823 |
+|      113126 | bio |                     2254 |
+|      113236 | bio |                     4124 |
++-------------+-----+--------------------------+
+
+
+5.- Quines són les comandes, nom de venedor, societat i quantitat dels diferents productes de cada línia de detall, en les que el número dels diferents productes adquirits és major que 6 i no els ha venut ni Bill Adams, ni Dan Roberts ni tampoc la Nancy Angelli.
+
+
+Select detall.num_comanda, venedors.nom, group_concat(detall.quantitat) AS Quantitat_Productes From detall JOIN comandes LEFT JOIN venedors ON comandes.ven = venedors.num_ven USING (num_comanda) Where venedors.nom != 'Bill Adams' and venedors.nom != 'Dan Roberts' and venedors.nom != 'Nancy Angelli' Group by detall.num_comanda Having count(detall.num_comanda) > 6;
++-------------+-------------+-------------------------+
+| num_comanda | nom         | Quantitat_Productes     |
++-------------+-------------+-------------------------+
+|      113108 | Paul Cruz   | 7,2369,27,2,7,3,10      |
+|      113120 | Tom Snyder  | 57,31,75,753,408,24,35  |
+|      113128 | Sam Clark   | 135,149,195,366,0,9,5   |
+|      113134 | Larry Fitch | 322,122,1811,24,9,18,5  |
+|      113162 | Sue Smith   | 190,3,27,373,1134,26,38 |
+|      113163 | Sue Smith   | 72,221,13,341,19,239,4  |
+|      113175 | Bob Smith   | 57,3,981,121,11,11,82   |
+|      113184 | Larry Fitch | 578,497,151,10,446,3,7  |
+|      113185 | Bob Smith   | 30,880,185,196,29,0,17  |
+|      113187 | Mary Jones  | 318,126,154,506,8,23,19 |
+|      113195 | Mary Jones  | 22,38,258,623,0,1,69    |
++-------------+-------------+-------------------------+
+
+
+6.- Quins son les dades dels productes i les línies de detall, de les comandes on la quantitat venuda de cop d'un producte és 50 uds.
+
+SELECT * From productes INNER JOIN detall ON detall.producte = productes.id_producte Where detall.quantitat = 50;
++--------+-------------+-----------------+--------+-------+------------+--------------+-------------+-----+----------+-----------+--------+
+| id_fab | id_producte | descripcio      | preu   | stock | datamod    | imatge       | num_comanda | fab | producte | quantitat | preu   |
++--------+-------------+-----------------+--------+-------+------------+--------------+-------------+-----+----------+-----------+--------+
+| bio    | 111         | Pipeta de Shali | 142.50 |   419 | 2021-01-25 | pipShali.png |      113075 | bio | 111      |        50 |  95.00 |
+| qsa    | xk48a       | Reductor        | 175.50 |    75 | 2021-01-08 | noimatge.png |      113105 | qsa | xk48a    |        50 | 175.50 |
+| bio    | 111         | Pipeta de Shali | 142.50 |   419 | 2021-01-25 | pipShali.png |      113237 | bio | 111      |        50 | 142.50 |
++--------+-------------+-----------------+--------+-------+------------+--------------+-------------+-----+----------+-----------+--------+
+
+
+7.- Projecta el nom de cada venedor i el total de les vendes, ordenades de més a menys import total de vendes.
+
+Select venedors.nom, detall.quantitat From detall INNER JOIN comandes RIGHT JOIN venedors ON comandes.ven = venedors.num_ven USING (num_comanda) Group by detall.num_comanda Order By sum(detall.preu) desc;
++---------------+-----------+
+| nom           | quantitat |
++---------------+-----------+
+| Sam Clark     |       112 |
+| Dan Roberts   |         2 |
+| Bill Adams    |        57 |
+| Sam Clark     |       424 |
+| Dan Roberts   |       184 |
+| Nancy Angelli |        22 |
+| Larry Fitch   |        47 |
+| Paul Cruz     |       438 |
+| Mary Jones    |        64 |
+| Larry Fitch   |        29 |
+| Bob Smith     |        30 |
+| Bill Adams    |        20 |
+| Bob Smith     |       192 |
+| Dan Roberts   |       276 |
+| Nancy Angelli |      1637 |
+| Dan Roberts   |       112 |
+| Nancy Angelli |        65 |
+| Bill Adams    |        29 |
+| Larry Fitch   |         4 |
+| Larry Fitch   |        38 |
+| Paul Cruz     |         2 |
+| Sue Smith     |        36 |
+| Dan Roberts   |        49 |
+| Larry Fitch   |        69 |
+| Dan Roberts   |       228 |
+| Bill Adams    |      1105 |
+| Paul Cruz     |         7 |
+| Sam Clark     |        73 |
+| Nancy Angelli |        88 |
+| Mary Jones    |        24 |
+| Mary Jones    |       120 |
+| Mary Jones    |       607 |
+| Bill Adams    |        32 |
+| Larry Fitch   |       578 |
+| Sue Smith     |         0 |
+| Larry Fitch   |         3 |
+| Mary Jones    |        22 |
+| Sam Clark     |       135 |
+| Nancy Angelli |       118 |
+| Dan Roberts   |      1155 |
+| Bill Adams    |       803 |
+| Sue Smith     |        72 |
+| Nancy Angelli |       133 |
+| Sam Clark     |       436 |
+| Bill Adams    |        68 |
+| Nancy Angelli |       667 |
+| Bill Adams    |        44 |
+| Larry Fitch   |        66 |
+| Larry Fitch   |        74 |
+| Sue Smith     |         8 |
+| Sam Clark     |         2 |
+| Sue Smith     |        42 |
+| Tom Snyder    |        57 |
+| Tom Snyder    |       142 |
+| Dan Roberts   |        47 |
+| Bill Adams    |        20 |
+| Nancy Angelli |        39 |
+| Sam Clark     |        31 |
+| Mary Jones    |       120 |
+| Larry Fitch   |       394 |
+| Bob Smith     |       155 |
+| Bob Smith     |        40 |
+| Nancy Angelli |        27 |
+| Bob Smith     |        17 |
+| Sam Clark     |       209 |
+| Bob Smith     |        57 |
+| Dan Roberts   |         8 |
+| Sue Smith     |         5 |
+| Sam Clark     |         2 |
+| Larry Fitch   |        10 |
+| Dan Roberts   |         5 |
+| Bill Adams    |         3 |
+| Nancy Angelli |         3 |
+| Sam Clark     |        21 |
+| Sam Clark     |        24 |
+| Sue Smith     |       190 |
+| Bill Adams    |        30 |
+| Sam Clark     |       144 |
+| Larry Fitch   |       322 |
+| Sue Smith     |        54 |
+| Paul Cruz     |         4 |
+| Sam Clark     |        23 |
+| Bill Adams    |        11 |
+| Paul Cruz     |       111 |
+| Tom Snyder    |       189 |
+| Bob Smith     |       229 |
+| Sue Smith     |         6 |
+| Dan Roberts   |       381 |
+| Bill Adams    |        73 |
+| Bob Smith     |       188 |
+| Larry Fitch   |       254 |
+| Dan Roberts   |       310 |
+| Nancy Angelli |         2 |
+| Tom Snyder    |         0 |
+| Sue Smith     |        44 |
+| Sue Smith     |         2 |
+| Mary Jones    |         3 |
+| Mary Jones    |       318 |
+| Nancy Angelli |        22 |
+| Nancy Angelli |       319 |
+| Sue Smith     |        25 |
+| Sue Smith     |         0 |
+| Bill Adams    |        11 |
+| Paul Cruz     |       325 |
+| Mary Jones    |        16 |
+| Bill Adams    |         3 |
+| Paul Cruz     |        52 |
+| Nancy Angelli |       130 |
+| Larry Fitch   |        38 |
+| Sue Smith     |       487 |
+| Bob Smith     |       143 |
+| Nancy Angelli |       146 |
+| Mary Jones    |        34 |
+| Tom Snyder    |         9 |
+| Dan Roberts   |        14 |
+| Bob Smith     |       150 |
+| Dan Roberts   |        31 |
+| Dan Roberts   |         7 |
+| Larry Fitch   |         3 |
+| Dan Roberts   |       908 |
+| Dan Roberts   |       183 |
+| Mary Jones    |       206 |
+| Larry Fitch   |        21 |
+| Larry Fitch   |       369 |
+| Larry Fitch   |        47 |
+| Dan Roberts   |         6 |
+| Sam Clark     |        45 |
+| Tom Snyder    |       215 |
+| Sam Clark     |        47 |
+| Sue Smith     |         1 |
+| Paul Cruz     |         1 |
+| Larry Fitch   |         3 |
+| Nancy Angelli |         1 |
+| Larry Fitch   |         1 |
+| Paul Cruz     |         5 |
+| Paul Cruz     |        39 |
+| Sue Smith     |       155 |
+| Paul Cruz     |        23 |
+| Nancy Angelli |        20 |
+| Sam Clark     |        39 |
+| Sue Smith     |         0 |
+| Sue Smith     |        20 |
+| Dan Roberts   |       162 |
+| Nancy Angelli |        18 |
+| Tom Snyder    |        11 |
+| Dan Roberts   |         2 |
+| Sue Smith     |         6 |
+| Larry Fitch   |        20 |
+| Larry Fitch   |         2 |
+| Larry Fitch   |         4 |
+| Tom Snyder    |       278 |
+| Tom Snyder    |       763 |
+| Tom Snyder    |       119 |
+| Dan Roberts   |         3 |
+| Sam Clark     |        21 |
+| Larry Fitch   |        32 |
+| Larry Fitch   |        12 |
+| Nancy Angelli |         4 |
+| Larry Fitch   |        14 |
+| Sam Clark     |         6 |
+| Nancy Angelli |        10 |
+| Sam Clark     |        27 |
+| Bill Adams    |        50 |
+| Paul Cruz     |        68 |
+| Paul Cruz     |       147 |
+| Larry Fitch   |        64 |
+| Bill Adams    |         5 |
+| Mary Jones    |        10 |
+| Sue Smith     |         4 |
+| Sam Clark     |        10 |
+| Nancy Angelli |        10 |
+| Mary Jones    |        10 |
+| Tom Snyder    |         5 |
+| Sue Smith     |        10 |
+| Dan Roberts   |        34 |
+| Bill Adams    |        28 |
+| Bill Adams    |         6 |
+| Larry Fitch   |        80 |
+| Nancy Angelli |       394 |
+| Larry Fitch   |       172 |
+| Bill Adams    |        35 |
+| Paul Cruz     |         3 |
+| Dan Roberts   |         8 |
+| Sue Smith     |      1900 |
+| Paul Cruz     |      1087 |
+| Nancy Angelli |       422 |
+| Sue Smith     |       269 |
+| Sue Smith     |        24 |
+| Tom Snyder    |         8 |
+| Bill Adams    |        54 |
+| Larry Fitch   |        10 |
+| Bill Adams    |        12 |
+| Larry Fitch   |        18 |
+| Paul Cruz     |       315 |
+| Larry Fitch   |         9 |
+| Bill Adams    |        16 |
+| Bob Smith     |       746 |
+| Larry Fitch   |       578 |
+| Paul Cruz     |        24 |
+| Bill Adams    |         6 |
++---------------+-----------+
+
+
+8.- Quines són les dades dels venedors dels que desconeixem les quotes assignades.
+
+Select * From venedors Where venedors.quota IS NULL;
++---------+------------+----------+-------------+---------+------------+----------+-------+--------+
+| num_ven | nom        | any_naix | oficina_ven | titol   | contracte  | director | quota | vendes |
++---------+------------+----------+-------------+---------+------------+----------+-------+--------+
+|     110 | Tom Snyder |     1970 |        NULL | Venedor | 1990-01-13 |      101 |  NULL |  91329 |
++---------+------------+----------+-------------+---------+------------+----------+-------+--------+
+
+
+9.- Quins han estat els cinc productes dels que s'han venut, més número d'unitats de producte en el total de les comandes i que cap no pertany al fabricant 'bio'. Projecta el fabricant, producte i número d'unitats totals venudes de més a menys.
+
+Select detall.producte, detall.fab, detall.quantitat From detall Where detall.fab != 'bio' Order By detall.quantitat desc LIMIT 5;
++----------+-----+-----------+
+| producte | fab | quantitat |
++----------+-----+-----------+
+| 41001    | aci |       803 |
+| 41001    | aci |       763 |
+| 41001    | aci |       667 |
+| 41001    | aci |       578 |
+| 887h     | imm |       502 |
++----------+-----+-----------+
+
+
+10.- Quines són les dades dels clients que han fet més de 10 comandes i quantes ha fet cadascú?
+
+Select clients.*, Count(comandes.clie) AS Comandes_Client From clients INNER Join comandes ON comandes.clie = clients.num_clie Group By comandes.clie Having count(comandes.clie) > 10;
++----------+------------------+----------+--------+------+----------+-----------------+
+| num_clie | societat         | ven_clie | credit | pais | idioma   | Comandes_Client |
++----------+------------------+----------+--------+------+----------+-----------------+
+|     2102 | First Corp       |      101 |  65000 |    3 | Angles   |              16 |
+|     2106 | Fred Lewis Corp. |      102 |  65000 |    5 | Frances  |              12 |
+|     2108 | Holm & Landis    |      109 |  55000 |    6 | Catala   |              11 |
+|     2111 | JCP Inc          |      103 |  50000 |    6 | Alemany  |              12 |
+|     2114 | Orion Corp       |      102 |  20000 |    4 | Italia   |              12 |
+|     2118 | Midwest Systems  |      108 |  60000 |    2 | Castella |              14 |
+|     2120 | Rico Enterprises |      102 |  50000 |    6 | Angles   |              14 |
+|     2124 | Peter Brothers   |      107 |  40000 |    4 | Angles   |              14 |
++----------+------------------+----------+--------+------+----------+-----------------+
+

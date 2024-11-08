@@ -1,0 +1,184 @@
+1) Llista el nom dels venedors amb quotes iguals o superiors a l'objectiu de l'oficina d'Atlanta
+
+SELECT v.nom, v.quota FROM venedors v
+	WHERE v.quota >= (SELECT o.objectiu FROM oficines o 
+	WHERE o.ciutat = "Atlanta"); 
+
++-------------+--------+
+| nom         | quota  |
++-------------+--------+
+| Sue Smith   | 350000 |
+| Bill Adams  | 350000 |
+| Larry Fitch | 350000 |
++-------------+--------+
+
+
+2) Llista el nom de totes els clients atesos per Bill Adams
+(es podria fer sense subconsulta? com?)
+
+SELECT c.societat FROM clients c
+	WHERE c.ven_clie = (SELECT v.num_ven FROM venedors v
+	WHERE v.nom = "Bill Adams");
+
++-----------------+
+| societat        |
++-----------------+
+| Acme Mfg        |
+| Pfizer-Biontech |
+| Three-Way Lines |
++-----------------+
+
+Es podria fer sense subconsulta de la següent manera:
+
+SELECT c.societat FROM clients c
+	JOIN venedors v ON c.ven_clie=v.num_ven
+	WHERE v.nom = "Bill Adams";
+
++-----------------+
+| societat        |
++-----------------+
+| Acme Mfg        |
+| Pfizer-Biontech |
+| Three-Way Lines |
++-----------------+
+
+
+3) Llista tots els productes del fabricant ACI pels quals les existències (stock) d'aquest producte, superen les del producte ACI 41004.
+
+SELECT p.id_producte FROM productes p
+	WHERE p.id_fab = "aci" 
+	AND p.stock > (SELECT p.stock FROM productes p
+	WHERE p.id_producte = "41004");
+
++-------------+
+| id_producte |
++-------------+
+| 41001       |
+| 41002       |
+| 41003       |
++-------------+
+
+
+4) Llista els venedors que treballen en oficines amb vendes superiors al seu objectiu.
+
+SELECT v.nom FROM venedors v
+	WHERE v.oficina_ven IN (SELECT o.oficina FROM oficines o
+	WHERE o.vendes > o.objectiu);
+
++-------------+
+| nom         |
++-------------+
+| Sam Clark   |
+| Mary Jones  |
+| Bill Adams  |
+| Sue Smith   |
+| Larry Fitch |
++-------------+
+
+5) Llista els venedors que no treballen en oficines dirigides per l'empleat 108
+
+SELECT v.nom FROM venedors v
+	WHERE v.oficina_ven NOT IN (SELECT o.oficina FROM oficines o
+	WHERE o.dir = "108");
+
++-------------+
+| nom         |
++-------------+
+| Dan Roberts |
+| Paul Cruz   |
+| Bob Smith   |
+| Bill Adams  |
+| Sam Clark   |
+| Mary Jones  |
++-------------+
+
+
+6) Llista tots els clients, sense repetició, que han fet comandes de productes que comencin per 4100 del fabricant ACI, entre gener i juny de 1990
+
+SELECT DISTINCT c.societat FROM clients c
+	WHERE c.num_clie IN (SELECT co.clie FROM comandes co
+	WHERE co.num_comanda IN (SELECT d.num_comanda FROM detall d
+	WHERE d.producte IN (SELECT p.id_producte FROM productes p
+	WHERE p.id_fab = "aci"
+	AND p.id_producte LIKE '4100%')) 
+	AND co.data_comanda BETWEEN "1990-01-01" AND "1990-06-30");
+	
++-----------------+
+| societat        |
++-----------------+
+| Holm & Landis   |
+| JCP Inc         |
+| Ian & Schmidt   |
+| Midwest Systems |
++-----------------+
+
+
+7) Llista els clients assignats a Sue Smith
+
+SELECT c.societat FROM clients c
+	WHERE c.ven_clie IN (SELECT v.num_ven FROM venedors v
+	WHERE v.nom = "Sue Smith");
+
++------------------+
+| societat         |
++------------------+
+| Fred Lewis Corp. |
+| Orion Corp       |
+| Rico Enterprises |
+| Carter & Sons    |
++------------------+
+
+
+8) Llista les oficines on hi hagi algun venedor la quota del qual representi més del 50% de l'objectiu de la oficina.
+
+SELECT o.oficina FROM oficines o
+	WHERE o.oficina IN (SELECT v.oficina_ven FROM venedors v
+	WHERE v.quota > (o.objectiu * 0.5));
+
++---------+
+| oficina |
++---------+
+|      11 |
+|      13 |
+|      22 |
++---------+
+
+
+9) Llista els noms i les edats que tindrien els venedors que tenien quotes per sobre del promig.
+
+SELECT v.nom, (2023 - v.any_naix) AS anys FROM venedors v
+	WHERE v.quota > (SELECT AVG(v.quota) FROM venedors v);
+
++-------------+------+
+| nom         | anys |
++-------------+------+
+| Sue Smith   |   75 |
+| Bill Adams  |   58 |
+| Larry Fitch |   61 |
++-------------+------+
+
+
+10) Llista els clients que tenen assignats venedors de les oficines de qualsevol regió diferent a la regió 'Est'.
+
+SELECT c.societat FROM clients c
+	WHERE c.ven_clie IN (SELECT v.num_ven FROM venedors v
+	WHERE v.oficina_ven IN (SELECT o.oficina FROM oficines o
+	WHERE o.regio != "Est"));
+
++------------------+
+| societat         |
++------------------+
+| Fred Lewis Corp. |
+| Orion Corp       |
+| Rico Enterprises |
+| Carter & Sons    |
+| Zetacorp         |
+| Midwest Systems  |
+| Chen Associates  |
+| Peter Brothers   |
++------------------+
+
+
+
+
+

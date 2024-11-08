@@ -1,0 +1,9 @@
+codi_empl,nom_empl,cognom_empl,sou,nom_dpt,ciutat_dpt,num_proj
+1,Maria,Puig,60000,DIR,Girona,1
+2,Pere,Mas,54000,DIR,Barcelona,4
+3,Anna,Ros,42000,DISS,Lleida,3
+4,Jordi,Roca,42000,DISS,Barcelona,4
+5,Clara,Blanc,24000,PROG,Tarragona,1
+6,Laura,Tort,18000,PROG,Tarragona,3
+7,Roger,Salt,24000,\N,\N,4
+8,Sergi,Grau,18000,PROG,Tarragona,\N

@@ -1,0 +1,103 @@
+
+mysql> USE vk21;
+Database changed
+
+mysql> SELECT * FROM productes WHERE id_producte="41001" AND id_fab="aci";
++--------+-------------+-----------------+-------+-------+------------+--------------+
+| id_fab | id_producte | descripcio      | preu  | stock | datamod    | imatge       |
++--------+-------------+-----------------+-------+-------+------------+--------------+
+| aci    | 41001       | Articulo Tipo 1 | 82.50 |   808 | 2021-01-08 | noimatge.png |
++--------+-------------+-----------------+-------+-------+------------+--------------+
+1 row in set (0,00 sec)
+
+mysql> INSERT INTO comandes VALUES('113240', 'Comanda de prova', '2024-09-25', 2111, 105, 21, 0);
+Query OK, 1 row affected (0,02 sec)
+
+mysql> INSERT INTO detall(num_comanda,fab, producte, quantitat, preu) VALUES('113240','aci', '41001', 10, 82.50);
+Query OK, 1 row affected (0,02 sec)
+
+mysql> SELECT * FROM detall WHERE num_comanda='113240';
++-------------+-----+----------+-----------+-------+
+| num_comanda | fab | producte | quantitat | preu  |
++-------------+-----+----------+-----------+-------+
+|      113240 | aci | 41001    |        10 | 82.50 |
++-------------+-----+----------+-----------+-------+
+1 row in set (0,00 sec)
+
+mysql> SELECT * FROM productes WHERE id_producte="41001" AND id_fab="aci";
++--------+-------------+-----------------+-------+-------+------------+--------------+
+| id_fab | id_producte | descripcio      | preu  | stock | datamod    | imatge       |
++--------+-------------+-----------------+-------+-------+------------+--------------+
+| aci    | 41001       | Articulo Tipo 1 | 82.50 |   798 | 2021-01-08 | noimatge.png |
++--------+-------------+-----------------+-------+-------+------------+--------------+
+1 row in set (0,00 sec)
+
+mysql> UPDATE detall SET quantitat=15 WHERE num_comanda='113240';
+Query OK, 1 row affected (0,02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM detall WHERE num_comanda='113240';
++-------------+-----+----------+-----------+-------+
+| num_comanda | fab | producte | quantitat | preu  |
++-------------+-----+----------+-----------+-------+
+|      113240 | aci | 41001    |        15 | 82.50 |
++-------------+-----+----------+-----------+-------+
+1 row in set (0,00 sec)
+
+mysql> SELECT * FROM productes WHERE id_producte="41001" AND id_fab="aci";
++--------+-------------+-----------------+-------+-------+------------+--------------+
+| id_fab | id_producte | descripcio      | preu  | stock | datamod    | imatge       |
++--------+-------------+-----------------+-------+-------+------------+--------------+
+| aci    | 41001       | Articulo Tipo 1 | 82.50 |   793 | 2021-01-08 | noimatge.png |
++--------+-------------+-----------------+-------+-------+------------+--------------+
+1 row in set (0,00 sec)
+
+mysql> SELECT * FROM productes WHERE id_producte="41001" AND id_fab="bio";
++--------+-------------+-------------------+-------+-------+------------+----------------+
+| id_fab | id_producte | descripcio        | preu  | stock | datamod    | imatge         |
++--------+-------------+-------------------+-------+-------+------------+----------------+
+| bio    | 41001       | Tubo ensayo c/250 | 30.00 |  1173 | 2021-01-25 | tubensc250.png |
++--------+-------------+-------------------+-------+-------+------------+----------------+
+1 row in set (0,00 sec)
+
+mysql> UPDATE detall SET fab='bio', preu=30.00 WHERE num_comanda='113240';
+Query OK, 1 row affected (0,01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM detall WHERE num_comanda='113240';
++-------------+-----+----------+-----------+-------+
+| num_comanda | fab | producte | quantitat | preu  |
++-------------+-----+----------+-----------+-------+
+|      113240 | bio | 41001    |        15 | 30.00 |
++-------------+-----+----------+-----------+-------+
+1 row in set (0,00 sec)
+
+mysql> SELECT * FROM productes WHERE id_producte="41001" AND id_fab="aci";
++--------+-------------+-----------------+-------+-------+------------+--------------+
+| id_fab | id_producte | descripcio      | preu  | stock | datamod    | imatge       |
++--------+-------------+-----------------+-------+-------+------------+--------------+
+| aci    | 41001       | Articulo Tipo 1 | 82.50 |   808 | 2021-01-08 | noimatge.png |
++--------+-------------+-----------------+-------+-------+------------+--------------+
+1 row in set (0,00 sec)
+
+mysql> SELECT * FROM productes WHERE id_producte="41001" AND id_fab="bio";
++--------+-------------+-------------------+-------+-------+------------+----------------+
+| id_fab | id_producte | descripcio        | preu  | stock | datamod    | imatge         |
++--------+-------------+-------------------+-------+-------+------------+----------------+
+| bio    | 41001       | Tubo ensayo c/250 | 30.00 |  1158 | 2021-01-25 | tubensc250.png |
++--------+-------------+-------------------+-------+-------+------------+----------------+
+1 row in set (0,00 sec)
+
+mysql> DELETE FROM detall WHERE num_comanda='113240';
+Query OK, 1 row affected (0,03 sec)
+
+mysql> SELECT * FROM detall WHERE num_comanda='113240';
+Empty set (0,00 sec)
+
+mysql> SELECT * FROM productes WHERE id_producte="41001" AND id_fab="bio";
++--------+-------------+-------------------+-------+-------+------------+----------------+
+| id_fab | id_producte | descripcio        | preu  | stock | datamod    | imatge         |
++--------+-------------+-------------------+-------+-------+------------+----------------+
+| bio    | 41001       | Tubo ensayo c/250 | 30.00 |  1173 | 2021-01-25 | tubensc250.png |
++--------+-------------+-------------------+-------+-------+------------+----------------+
+1 row in set (0,00 sec)

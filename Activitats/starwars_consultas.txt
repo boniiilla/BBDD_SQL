@@ -1,0 +1,31 @@
+1. Nom de l'episodi i títol de les pel·lícules on apareix 'Luke Skywalker'.
+
+SELECT f.episode, f.title FROM people p 
+	JOIN people_films pf ON p.id=pf.id_people
+	JOIN films f ON (pf.id_film=f.id AND p.id=pf.id_people)
+	WHERE p.name="Luke Skywalker";
+	
++------------+-------------------------+
+| episode    | title                   |
++------------+-------------------------+
+| Episode IV | A New Hope              |
+| Episode V  | The Empire Strikes Back |
+| Episode VI | Return of the Jedi      |
++------------+-------------------------+
+
+Amb subconsultes:
+
+SELECT f.episode, f.title FROM films f
+	WHERE f.id IN (SELECT pf.id_film FROM people_films pf
+	WHERE pf.id_people IN (SELECT p.id FROM people p
+	WHERE p.name LIKE "Luke Skywalker"));
+	
++------------+-------------------------+
+| episode    | title                   |
++------------+-------------------------+
+| Episode IV | A New Hope              |
+| Episode V  | The Empire Strikes Back |
+| Episode VI | Return of the Jedi      |
++------------+-------------------------+
+
+

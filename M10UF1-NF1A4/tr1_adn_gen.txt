@@ -1,0 +1,4 @@
+INSERT INTO adn (nomgen, adn) VALUES ('G24001A', 'ACCGTGTC');
+INSERT INTO adn (nomgen, adn) VALUES ('G24002A', 'ACCGGTCCU');
+INSERT INTO adn (nomgen, adn) VALUES ('G24003A', 'ACCggtcCA');
+

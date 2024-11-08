@@ -1,0 +1,198 @@
+1.-
+************************************************************************************
+source /home/usuari/compartida/M02UF3-EX/empresa-insert.sql
+Database changed
+Query OK, 4 rows affected (0,02 sec)
+Records: 4  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 6 rows affected (0,02 sec)
+Records: 6  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 4 rows affected (0,02 sec)
+Records: 4  Deleted: 0  Skipped: 0  Warnings: 0
+
+Query OK, 8 rows affected (0,03 sec)
+Records: 8  Deleted: 0  Skipped: 0  Warnings: 0
+
+CLIENTS:
+LOAD DATA LOCAL INFILE '/home/usuari/compartida/M02UF3-EX/clients.csv' 
+INTO TABLE clients
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(codi_cli, nom_cli, nif, adreca, ciutat, telefon);
+
+SELECT * FROM clients;
++----------+---------+-----------+-----------------+-----------+-----------+
+| codi_cli | nom_cli | nif       | adreca          | ciutat    | telefon   |
++----------+---------+-----------+-----------------+-----------+-----------+
+|       10 | ECIGSA  | 38567893C | Arago 242 4t 1a | Barcelona | 932301520 |
+|       20 | CME     | 38123898E | Valencia 22     | Girona    | 972235721 |
+|       30 | ACME    | 36432127A | Mallorca 33     | LLeida    | 973234567 |
+|       40 | JGM     | 38782345B | Rossello 44     | Tarragona | 977337143 |
++----------+---------+-----------+-----------------+-----------+-----------+
+
+DEPARTAMENTS:
+LOAD DATA LOCAL INFILE '/home/usuari/compartida/M02UF3-EX/departaments.csv' 
+INTO TABLE departaments
+FIELDS TERMINATED BY ':' ENCLOSED BY '"' LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(nom_dpt, ciutat_dpt, telefon);
+
+SELECT * FROM departaments;
++---------+------------+-----------+
+| nom_dpt | ciutat_dpt | telefon   |
++---------+------------+-----------+
+| DIR     | Barcelona  | 934226070 |
+| DIR     | Girona     | 972238970 |
+| DISS    | Barcelona  | 932248523 |
+| DISS    | Lleida     | 973235040 |
+| PROG    | Girona     | 972235091 |
+| PROG    | Tarragona  | 977333852 |
++---------+------------+-----------+
+
+PROJECTES:
+LOAD DATA LOCAL INFILE '/home/usuari/compartida/M02UF3-EX/projectes.csv' 
+INTO TABLE projectes
+FIELDS TERMINATED BY '\t' ENCLOSED BY '"' LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(codi_proj, nom_proj, preu, data_inici, data_prev_fi, data_fi, codi_client);
+
+SELECT * FROM projectes;
++-----------+----------+---------+------------+--------------+------------+-------------+
+| codi_proj | nom_proj | preu    | data_inici | data_prev_fi | data_fi    | codi_client |
++-----------+----------+---------+------------+--------------+------------+-------------+
+|         1 | GESCOM   |  600000 | 2004-01-01 | 2005-01-01   | NULL       |          10 |
+|         2 | PESCI    | 1200000 | 2002-01-01 | 2004-05-31   | 2004-05-01 |          10 |
+|         3 | SALSA    |  600000 | 2004-02-10 | 2005-01-02   | NULL       |          20 |
+|         4 | TINELL   | 2400000 | 2003-01-01 | 2005-01-12   | NULL       |          20 |
++-----------+----------+---------+------------+--------------+------------+-------------+
+
+EMPLEATS:
+LOAD DATA LOCAL INFILE '/home/usuari/compartida/M02UF3-EX/empleats.csv' 
+INTO TABLE empleats
+FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n'
+IGNORE 1 LINES
+(codi_empl, nom_empl, cognom_empl, sou, nom_dpt, ciutat_dpt, num_proj);
+
+SELECT * FROM empleats;
++-----------+----------+-------------+-------+---------+------------+----------+
+| codi_empl | nom_empl | cognom_empl | sou   | nom_dpt | ciutat_dpt | num_proj |
++-----------+----------+-------------+-------+---------+------------+----------+
+|         1 | Maria    | Puig        | 60000 | DIR     | Girona     |        1 |
+|         2 | Pere     | Mas         | 54000 | DIR     | Barcelona  |        4 |
+|         3 | Anna     | Ros         | 42000 | DISS    | Lleida     |        3 |
+|         4 | Jordi    | Roca        | 42000 | DISS    | Barcelona  |        4 |
+|         5 | Clara    | Blanc       | 24000 | PROG    | Tarragona  |        1 |
+|         6 | Laura    | Tort        | 18000 | PROG    | Tarragona  |        3 |
+|         7 | Roger    | Salt        | 24000 | NULL    | NULL       |        4 |
+|         8 | Sergi    | Grau        | 18000 | PROG    | Tarragona  |     NULL |
++-----------+----------+-------------+-------+---------+------------+----------+
+*****************************************************************************************
+2.-
+*****************************************************************************************
+mysqldump -u root -p -v --no-data --skip-triggers --no-create-db --skip-opt -u root -p empresa > empresa-create-dump.sql
+
+-- Connecting to localhost...
+Enter password: 
+-- Retrieving table structure for table clients...
+-- Skipping dump data for table 'clients', --no-data was used
+-- Retrieving table structure for table departaments...
+-- Skipping dump data for table 'departaments', --no-data was used
+-- Retrieving table structure for table empleats...
+-- Skipping dump data for table 'empleats', --no-data was used
+-- Retrieving table structure for table projectes...
+-- Skipping dump data for table 'projectes', --no-data was used
+-- Disconnecting from localhost...
+
+mysqldump -u root -p -v --no-create-info --no-create-db -u root -p empresa > empresa-dades-dump.sql
+
+-- Connecting to localhost...
+Enter password: 
+-- Retrieving table structure for table clients...
+-- Sending SELECT query...
+-- Retrieving rows...
+-- Retrieving table structure for table departaments...
+-- Sending SELECT query...
+-- Retrieving rows...
+-- Retrieving table structure for table empleats...
+-- Sending SELECT query...
+-- Retrieving rows...
+-- Retrieving table structure for table projectes...
+-- Sending SELECT query...
+-- Retrieving rows...
+-- Disconnecting from localhost...
+**************************************************************************************
+3.-
+**************************************************************************************
+mysql -u root -p -e 'SELECT * FROM empresa.clients' > clients.txt
+
+cat clients.txt 
+codi_cli;nom_cli;nif;adreca;ciutat;telefon
+10;ECIGSA;38567893C;Arago 242 4t 1a;Barcelona;932301520
+20;CME;38123898E;Valencia 22;Girona;972235721
+30;ACME;36432127A;Mallorca 33;LLeida;973234567
+40;JGM;38782345B;Rossello 44;Tarragona;977337143
+**************************************************************************************
+4.-
+**************************************************************************************
+mysqlbinlog -v --start-datetime="2024-03-02 17:20:00" --stop-datetime="2024-03-02 17:30:00" /home/usuari/compartida/M02UF3-EX/mysql-bin.000140
+
+# The proper term is pseudo_replica_mode, but we use this compatibility alias
+# to make the statement usable on server versions 8.0.24 and older.
+/*!50530 SET @@SESSION.PSEUDO_SLAVE_MODE=1*/;
+/*!50003 SET @OLD_COMPLETION_TYPE=@@COMPLETION_TYPE,COMPLETION_TYPE=0*/;
+DELIMITER /*!*/;
+SET @@SESSION.GTID_NEXT= 'AUTOMATIC' /* added by mysqlbinlog */ /*!*/;
+DELIMITER ;
+# End of log file
+/*!50003 SET COMPLETION_
+*************************************************************************************
+5.-
+*************************************************************************************
+a) REPLICATION SLAVE
+*************************************************************************************
+6.-
+*************************************************************************************
+c) Replica aturada sense errors
+*************************************************************************************
+7.-
+*************************************************************************************
+mysql:[root:empresa]> drop database empresa;
+Query OK, 4 rows affected (0,17 sec)
+
+mysql:[root:(none)]> source /home/usuari/compartida/M02UF3-EX/empresa-create.sql
+Query OK, 0 rows affected (0,00 sec)
+
+sudo mysqlimport --local -v -u root -p empresa clients clients.csv
+Connecting to localhost
+Enter password: 
+Selecting database empresa
+Loading data from LOCAL file: clients into clients
+mysqlimport: Error: 2068, LOAD DATA LOCAL INFILE file request rejected due to restrictions on access., when using table: clients
+Disconnecting from localhost
+
+sudo mysqlimport --local -v -u root -p empresa departaments departaments.csv
+Connecting to localhost
+Enter password: 
+Selecting database empresa
+Loading data from LOCAL file: departaments into departaments
+mysqlimport: Error: 2068, LOAD DATA LOCAL INFILE file request rejected due to restrictions on access., when using table: departaments
+Disconnecting from localhost
+
+sudo mysqlimport --local -v -u root -p empresa empleats empleats.csv
+Connecting to localhost
+Enter password: 
+Selecting database empresa
+Loading data from LOCAL file: empleats into empleats
+mysqlimport: Error: 2068, LOAD DATA LOCAL INFILE file request rejected due to restrictions on access., when using table: empleats
+Disconnecting from localhost
+
+*************************************************************************************
+9.-
+*************************************************************************************
+c) /var/lib/mysql
+*************************************************************************************
+10.-
+*************************************************************************************
+d) FIELDS TERMINATED BY ','
+*************************************************************************************
