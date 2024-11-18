@@ -4,4 +4,30 @@ CREATE PROCEDURE IF NOT EXISTS ciutats()
 BEGIN
     SELECT Name, Population FROM City;
 END //
-DELIMITER;
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS ciutats_lim;
+DELIMITER //
+CREATE PROCEDURE IF NOT EXISTS ciutats_lim(IN lon INT)
+BEGIN
+    SELECT Name, Population FROM City ORDER BY Name LIMIT lon;
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS ciutats_lim2;
+DELIMITER //
+CREATE PROCEDURE IF NOT EXISTS ciutats_lim2(IN ini INT, IN lon INT)
+BEGIN
+    SELECT Name, Population FROM City ORDER BY Name LIMIT ini, lon;
+END //
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS ciutats3;
+DELIMITER //
+CREATE PROCEDURE IF NOT EXISTS ciutats3(
+    IN pais VARCHAR(28), OUT numciutats INT)
+BEGIN
+    SELECT COUNT(*) INTO numciutats
+    FROM City WHERE CountryCode = (SELECT Code FROM Country WHERE Name = pais);
+END //
+DELIMITER ;
