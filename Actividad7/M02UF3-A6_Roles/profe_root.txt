@@ -1,0 +1,22 @@
+*************************** 1. row ***************************
+QUERY 1: CREATE USER profe@localhost IDENTIFIED BY P@ssw0rd4;
+*************************** 1. row ***************************
+QUERY 2: GRANT gerent TO profe@localhost;
++------------------+-----------+
+| user             | host      |
++------------------+-----------+
+| director         | %         |
+| gerent           | %         |
+| venedor          | %         |
+| BobSmith         | localhost |
+| LarryFitch       | localhost |
+| MaryJones        | localhost |
+| SamClark         | localhost |
+| SueSmith         | localhost |
+| TomSnyder        | localhost |
+| mysql.infoschema | localhost |
+| mysql.session    | localhost |
+| mysql.sys        | localhost |
+| profe            | localhost |
+| root             | localhost |
++------------------+-----------+

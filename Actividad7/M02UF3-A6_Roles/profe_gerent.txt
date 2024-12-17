@@ -1,0 +1,4 @@
+*************************** 1. row ***************************
+QUERY 1: CREATE USER profe@localhost IDENTIFIED BY P@ssw0rd4;
+*************************** 1. row ***************************
+QUERY 2: GRANT gerent TO profe@localhost;
