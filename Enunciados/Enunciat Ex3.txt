@@ -70,3 +70,5 @@ WHERE [NOT] EXISTS subconsulta;
 #
 
 20.- Quines formes de govern hi ha als països on l'idioma és l'anglès?
+
+
